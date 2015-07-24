@@ -3,45 +3,41 @@
 
 
 command tool::inputCommand(command& newCommand) {
-	string cmdline;
-	int position;
-	int numInput = 0;
+	string userCommand;
+	int index;
 
-	//  cout << "Enter a commandline below" << endl;
+	// prompt the user to enter a command
 	cout << "> ";
-	getline(cin, cmdline);
+	getline(cin, userCommand); // saves the entire user input as one string
 
-	//Find command type
-	position = cmdline.find(" ");
-	newCommand.type = cmdline.substr(0, position);
-	numInput++;
+// *************Separate the input string into three words***************************************
+	
+	// save first word as type "set, run, help, etc."
+	index = userCommand.find(" ");
+	newCommand.type = userCommand.substr(0, index);
+	userCommand = userCommand.substr(index + 1); // scroll to next word
 
-	//Find command flag; remove type from cmdline
-	cmdline = cmdline.substr(position + 1);
+	// save second word as field "interval, count, config, etc."
+	if (userCommand != newCommand.type) {
+		index = userCommand.find(" "); // loc second word
+		newCommand.field = userCommand.substr(0, index);  
+		userCommand = userCommand.substr(index + 1); //scroll to next word
 
-	//If cmdline has a flag
-	if (cmdline != newCommand.type) {
-		position = cmdline.find(" ");
-		newCommand.flag = cmdline.substr(0, position);
-		numInput++;
+		// save third word as condition "input values or 1|0 indentifiers"
+		if (userCommand != newCommand.field) {
+			index = userCommand.find(" ");
+			newCommand.condition = userCommand.substr(0, index);
 
-		//remove flag from cmdline; ready to extract value
-		cmdline = cmdline.substr(position + 1);
-
-		//If cmdline has a value
-		if (cmdline != newCommand.flag) {
-			position = cmdline.find(" ");
-			newCommand.value = cmdline.substr(0, position);
-			numInput;
 		}
 		else {
-			newCommand.value.clear();
+			newCommand.condition.clear();  // if there is no third word, clear the condition
 		}
 	}
 	else {
-		newCommand.flag.clear();
-		newCommand.value.clear();
+		newCommand.field.clear(); // if there is no second word, clear the field and the condition
+		newCommand.condition.clear();
 	}
+// ***********************************************************************************************
 	return newCommand;
 }
 
@@ -57,10 +53,10 @@ void tool::launchTool() {
 
 		//        system("run");
 
-		cmd = inputCommand(cmd);
+		cmd = inputCommand(cmd); // get command from user
 		string type = cmd.type; //first word
-		string flag = cmd.flag; //second word
-		string value = cmd.value; //third word or number
+		string flag = cmd.field; //second word
+		string value = cmd.condition; //third word or number
 
 		if (type == "run" && flag == "") {
 			cout << "Tool is running..\n";
@@ -78,7 +74,7 @@ void tool::launchTool() {
 			else if (flag == "interval" || flag == "count") {
 				//convert value to int
 				int value;
-				istringstream convert(cmd.value);
+				istringstream convert(cmd.condition);
 				convert >> value;
 
 				if (value < 1) {
@@ -94,7 +90,7 @@ void tool::launchTool() {
 			else if (flag == "blk_read") {
 				//convert value to int
 				int value;
-				istringstream convert(cmd.value);
+				istringstream convert(cmd.condition);
 				convert >> value;
 
 				if (value != 0 && value != 1) {
@@ -107,7 +103,7 @@ void tool::launchTool() {
 			else if (flag == "blk_read/s") {
 				//convert value to int
 				int value;
-				istringstream convert(cmd.value);
+				istringstream convert(cmd.condition);
 				convert >> value;
 
 				if (value != 0 && value != 1) {
@@ -120,7 +116,7 @@ void tool::launchTool() {
 			else if (flag == "kb_read/s") {
 				//convert value to int
 				int value;
-				istringstream convert(cmd.value);
+				istringstream convert(cmd.condition);
 				convert >> value;
 
 				if (value != 0 && value != 1) {
@@ -133,7 +129,7 @@ void tool::launchTool() {
 			else if (flag == "blk_write") {
 				//convert value to int
 				int value;
-				istringstream convert(cmd.value);
+				istringstream convert(cmd.condition);
 				convert >> value;
 
 				if (value != 0 && value != 1) {
@@ -146,7 +142,7 @@ void tool::launchTool() {
 			else if (flag == "blk_write/s") {
 				//convert value to int
 				int value;
-				istringstream convert(cmd.value);
+				istringstream convert(cmd.condition);
 				convert >> value;
 
 				if (value != 0 && value != 1) {
@@ -159,7 +155,7 @@ void tool::launchTool() {
 			else if (flag == "kb_write") {
 				//convert value to int
 				int value;
-				istringstream convert(cmd.value);
+				istringstream convert(cmd.condition);
 				convert >> value;
 
 				if (value != 0 && value != 1) {

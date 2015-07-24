@@ -1,6 +1,3 @@
-
-
-
 #ifndef TOOL_H
 #define TOOL_H
 
@@ -11,16 +8,14 @@
 #include "report.h"
 #include <sstream>
 
-
 using namespace std;
 
+// sampled code: Xiao Qin previous comp2710 instructor
 struct command {
 	string type;
-	string flag;
-	string value;
+	string field;
+	string condition;
 };
-
-
 
 class tool {
 private:
