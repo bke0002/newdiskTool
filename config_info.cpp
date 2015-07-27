@@ -135,7 +135,6 @@ const string &config_info::getReportName() const { return reportName; }
 
 // accessor function for report file name (only changes the local)
 void config_info::setReportName(const string name) {
-	//todo: need to account for taking in full path? It may actually just work as is though. Will test.
 	string oldName = getReportName();
 	config_info::reportName = name;
 	std::cout << "The report file name is changed from " << oldName << "' to '" << getReportName()

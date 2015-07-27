@@ -1,12 +1,13 @@
-//
-// Created by Connor Jones on 7/14/15.
-//
+// Report stores data from each call to linux or 'record' in a file. Can also print data directly out to the user
 
 #ifndef AUDISKTOOL_REPORT_H
 #define AUDISKTOOL_REPORT_H
-//#include <fstream> //shouldn't be needed
-//#include "config_info.h" //also might not need
+
 #include "record.h"
+#include "windows.h"
+//#include "unistd.h"
+
+using namespace std; 
 
 using std::ifstream;
 using std::ofstream;
@@ -16,7 +17,7 @@ private:
 	config_info configInfo;
 
 public:
-	report(config_info configInfo); //todo: may not be needed
+	report(config_info configInfo); //constructor really only utilized in development and testing
 	void printReport(config_info);
 	void writeFile(config_info);
 

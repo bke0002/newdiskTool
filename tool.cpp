@@ -1,7 +1,6 @@
 
 #include "tool.h"
 
-
 command tool::inputCommand(command& newCommand) {
 	string userCommand;
 	int index;
@@ -47,9 +46,10 @@ report report1(configInfo);
 
 void tool::launchTool() {
 
+	bool loop = true;
 	cout << "auDiskTool, VERSION " << VERSION << ". Type 'help' to find more about commands.\n\n";
 
-	while (1) {
+	while (loop) {
 
 		// *********system("run")**********************
 
@@ -191,7 +191,7 @@ void tool::launchTool() {
 			cout << "Determining if config settings have been updated..\n";
 			configInfo.save(); // writes configuration data to file and ends execution
 			cout << "Exiting..\n";
-			exit(0);
+			loop = false;
 		}
 
 		else if (type == "help") {

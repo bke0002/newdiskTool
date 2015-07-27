@@ -11,6 +11,8 @@
 #include <cstdlib>
 #include "config_info.h"
 
+using namespace std;
+
 class record {
 private:
 	config_info configInfo;
