@@ -3,10 +3,7 @@
 //
 
 #include "record.h"
-#include "math.h"
-#include <iostream>
-#include <sstream>
-#include <cstdlib>
+
 
 record::record(config_info configInformation) {
 	record::configInfo = configInformation;

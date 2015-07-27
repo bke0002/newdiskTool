@@ -5,7 +5,10 @@
 #ifndef AUDISKTOOL_RECORD_H
 #define AUDISKTOOL_RECORD_H
 
-
+#include "math.h"
+#include <iostream>
+#include <sstream>
+#include <cstdlib>
 #include "config_info.h"
 
 class record {

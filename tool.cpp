@@ -51,132 +51,135 @@ void tool::launchTool() {
 
 	while (1) {
 
-		//        system("run");
+		// *********system("run")**********************
 
 		cmd = inputCommand(cmd); // get command from user
 		string type = cmd.type; //first word
-		string flag = cmd.field; //second word
-		string value = cmd.condition; //third word or number
+		string field = cmd.field; //second word
+		string condition = cmd.condition; //third word or number
 
-		if (type == "run" && flag == "") {
+		// calls report/record classes (gets output from Linux)
+		if (type == "run" && field == "") {
 			cout << "Tool is running..\n";
 			report1.writeFile(configInfo);
-			cout << "Report ready.\n";
+			cout << "Report ready.\n"; // saves report, lets user know process has been completed
 		}
 
-		else if (type == "set" && value != "") {
+		// loop will catch all setter methods (command 'type' is set)
+		else if (type == "set" && condition != "") {
 
-			if (flag == "report") {
-				configInfo.setReportName(value);
-				//                cout << "report name updated to: " << configInfo.getReportName() << endl;
+			// changes local file name for report
+			if (field == "report") {
+				configInfo.setReportName(condition);
 			}
-
-			else if (flag == "interval" || flag == "count") {
+			
+			// calls setter functions for interval and count fields
+			else if (field == "interval" || field == "count") {
 				//convert value to int
-				int value;
-				istringstream convert(cmd.condition);
-				convert >> value;
+				int value = -1;
+				istringstream convert(cmd.condition); 
+				convert >> value; 
 
-				if (value < 1) {
+				if (value < 1) { // ensure that the user entered valid data (no negatives or zeros or non integers)
 					cout << "Please enter a valid command.\n";
 				}
-				else if (flag == "interval") {
+				else if (field == "interval") {
 					configInfo.setInterval(value);
 				}
-				else if (flag == "count") {
+				else if (field == "count") {
 					configInfo.setCount(value);
 				}
 			}
-			else if (flag == "blk_read") {
+			else if (field == "blk_read") {
 				//convert value to int
 				int value;
-				istringstream convert(cmd.condition);
-				convert >> value;
+				istringstream convert(cmd.condition); 
+				convert >> value; 
 
-				if (value != 0 && value != 1) {
+				if (value != 0 && value != 1) { // checks for invalid input
 					cout << "Please enter a valid input for value.\n";
 				}
 				else {
 					configInfo.setBlk_read(value);
 				}
 			}
-			else if (flag == "blk_read/s") {
+			else if (field == "blk_read/s") {
 				//convert value to int
 				int value;
 				istringstream convert(cmd.condition);
 				convert >> value;
 
-				if (value != 0 && value != 1) {
+				if (value != 0 && value != 1) { // checks for invalid input
 					cout << "Please enter a valid input for value.\n";
 				}
 				else {
 					configInfo.setBlk_reads(value);
 				}
 			}
-			else if (flag == "kb_read/s") {
+			else if (field == "kb_read/s") {
 				//convert value to int
 				int value;
 				istringstream convert(cmd.condition);
 				convert >> value;
 
-				if (value != 0 && value != 1) {
+				if (value != 0 && value != 1) { // checks for invalid input
 					cout << "Please enter a valid input for value.\n";
 				}
 				else {
 					configInfo.setKb_reads(value);
 				}
 			}
-			else if (flag == "blk_write") {
+			else if (field == "blk_write") {
 				//convert value to int
 				int value;
 				istringstream convert(cmd.condition);
 				convert >> value;
 
-				if (value != 0 && value != 1) {
+				if (value != 0 && value != 1) { // checks for invalid input
 					cout << "Please enter a valid input for value.\n";
 				}
 				else {
 					configInfo.setBlk_write(value);
 				}
 			}
-			else if (flag == "blk_write/s") {
+			else if (field == "blk_write/s") {
 				//convert value to int
 				int value;
 				istringstream convert(cmd.condition);
 				convert >> value;
 
-				if (value != 0 && value != 1) {
+				if (value != 0 && value != 1) { // checks for invalid input
 					cout << "Please enter a valid input for value.\n";
 				}
 				else {
 					configInfo.setBlk_writes(value);
 				}
 			}
-			else if (flag == "kb_write") {
+			else if (field == "kb_write") {
 				//convert value to int
 				int value;
 				istringstream convert(cmd.condition);
 				convert >> value;
 
-				if (value != 0 && value != 1) {
+				if (value != 0 && value != 1) { // checks for invalid input
 					cout << "Please enter a valid input for value.\n";
 				}
 				else {
 					configInfo.setKb_writes(value);
 				}
 			}
-			else {
+			else { // if user enters 'set' then invalid input reprompt user
 				cout << "Please enter a valid command. Type 'help' to see commands.\n";
 			}
 		}
 
-		else if (type == "print" && value == "") {
+		else if (type == "print" && condition == "") {
 
-			if (flag == "conf") {
+			if (field == "conf") { // prints configuration data (local)
 				configInfo.printConfig();
 			}
 
-			else if (flag == "report") {
+			else if (field == "report") { // prints report
 				report1.printReport(configInfo);
 			}
 
@@ -185,15 +188,13 @@ void tool::launchTool() {
 			}
 		}
 		else if (type == "exit") {
-			//todo: move to Tool class
 			cout << "Determining if config settings have been updated..\n";
-			configInfo.save();
+			configInfo.save(); // writes configuration data to file and ends execution
 			cout << "Exiting..\n";
 			exit(0);
 		}
 
 		else if (type == "help") {
-			//fdo: move to Tool class
 			printHelp();
 		}
 
@@ -208,7 +209,7 @@ void tool::launchTool() {
 
 }
 
-void tool::printHelp() { //todo: move to Tool class (if we use Tool class?)
+void tool::printHelp() { // list of commands for user (when user enters help)
 	cout << "run - run the monitoring tool.\n"
 		"set interval [value] ? set sampling period to [value]\n"
 		"set count [value] ? set the number of records to [value]\n"
